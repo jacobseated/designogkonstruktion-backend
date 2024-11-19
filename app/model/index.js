@@ -1,6 +1,6 @@
-const sequelize = require('../db/sequelize');
+const sequelize = require('../db/sequelize'); // Inkluder database forbindelsen
 
-const User = require('./User');
+const User = require('./User'); // Inkluder "User" modellen, som beskriver "users" tabellen i databasen
 
 const db = {
     sequelize, 

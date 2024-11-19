@@ -1,5 +1,5 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../db/sequelize');
+const { DataTypes } = require('sequelize'); // Henter "DataTypes" fra sequelize klassen
+const sequelize = require('../db/sequelize'); // Inkluder database forbindelsen
 
 const User = sequelize.define('User', {
     user_id: {

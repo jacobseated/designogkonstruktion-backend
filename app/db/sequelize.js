@@ -1,4 +1,7 @@
 require('dotenv').config(); // Indlæs miljø-variabler (.env environment variabler)
+
+// Inkludere kun Sequelize (Eks. ikke Sequelize.DataTypes)
+// Se eks model/User.js hvor DataTypes bliver inkluderet
 const { Sequelize } = require('sequelize');
 
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
