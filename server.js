@@ -6,8 +6,14 @@ const User = require('./app/model/User');
 const app = express();
 app.use(cors());
 
-const db = require("./app/model/User");
-db.sequelize.sync();
+const db = require("./app/model");
+db.sequelize.sync({ alter: true }) // Opret automatisk tabellerne hvis de ikke findes
+  .then(() => {
+    console.log('Database synchronized');
+  })
+  .catch(err => {
+    console.error('Failed to synchronize database:', err);
+  });
 
 app.use(bodyParser.json());
 
