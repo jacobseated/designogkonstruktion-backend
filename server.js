@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 // endpoints
 require("./app/routes/user-route")(app);
 
-const PORT = 8080;
+const PORT = 8081;
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
