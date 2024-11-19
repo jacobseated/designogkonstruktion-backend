@@ -5,7 +5,13 @@ module.exports = app => {
     let router = express.Router();
 
     router.get('/users', users.findAll);
+    router.get('/users', users.findOne);
+
     router.post('/users', users.create);
+
+    router.delete('/users', users.delete);
+    
+    router.put('/users', users.update);
 
     app.use(router); 
 };
