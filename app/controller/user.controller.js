@@ -1,4 +1,5 @@
 const db = require("../model");
+const bcrypt = require("bcrypt"); // Brugt til password hashing
 const User = db.User;
 
 exports.findAll = async (req, res) => {
