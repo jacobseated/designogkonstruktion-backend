@@ -7,8 +7,20 @@ const User = sequelize.define('User', {
         primaryKey: true,
         autoIncrement: true
     },
-    user_name: DataTypes.STRING,
-    user_mail: DataTypes.STRING,
+    user_name: {
+        type: DataTypes.STRING,
+        unique: true,
+        validate: {
+            is: /^[a-zæøå0-9]+$/i // Tillad kun a-z + æøå og 1-9 i brugernavne
+        }
+    },
+    user_mail: {
+        type: DataTypes.STRING,
+        unique: true,
+        validate: {
+            isEmail: true // Godkend kun gyldige e-mail adresser
+        }
+    },
     user_password: DataTypes.STRING,
     user_img: DataTypes.BLOB('long'),
     user_admin: DataTypes.TINYINT
