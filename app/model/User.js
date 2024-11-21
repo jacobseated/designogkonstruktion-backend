@@ -11,7 +11,7 @@ const User = sequelize.define('User', {
         type: DataTypes.STRING,
         unique: true,
         validate: {
-            is: /^[a-zæøå0-9]+$/i // Tillad kun a-z + æøå og 1-9 i brugernavne
+            is: /^[a-zæøå0-9 ]+$/i // Tillad kun a-z + æøå og 1-9 i brugernavne
         }
     },
     user_fullname: DataTypes.STRING,
@@ -24,7 +24,7 @@ const User = sequelize.define('User', {
     },
     user_password: DataTypes.STRING,
     user_img: DataTypes.BLOB('long'),
-    user_admin: DataTypes.TINYINT,
+    user_admin: Boolean,
     user_communities: DataTypes.JSON // Hvilke communities, brugeren er medlem af! (De her burde normaliseres ud til en community tabel)
 }, {
     tableName: 'users',
