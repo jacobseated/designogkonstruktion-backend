@@ -25,7 +25,7 @@ exports.findOne = async (req, res) => {
       return res.status(404).json({ message: "Brugeren blev ikke fundet" });
     }
 
-    res.json(user); // Send the user data if found
+    res.json(user); // Send brugeren tilbage til vores frontend
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Kunne ikke hente en liste af brugere" });
@@ -34,19 +34,19 @@ exports.findOne = async (req, res) => {
 
 exports.delete = async (req, res) => {
   try {
-    const { username } = req.params; // Extract the username from the route parameter
+    const { user_name } = req.params;
 
-    // Use Sequelize's destroy method to delete the user
+    // Brug Sequelize's destroy method til at slette brugeren. Nok svarende til: DELETE FROM users WHERE user_name = 'tilfældigtBrugernavn'
     const deletedCount = await db.User.destroy({
-      where: { user_name: username },
+      where: { user_name: user_name },
     });
-    console.log(username);
+    console.log('Username: ' + user_name);
     if (deletedCount === 0) {
-      // No user was deleted because the user was not found
+      // Hvis brugeren ikke blev fundet, bliver der ikke slettet noget
       return res.status(404).json({ message: "Brugeren blev ikke fundet" });
     }
 
-    // User successfully deleted
+    // Send besked til frontend'en om at brugeren blev slettet
     res.json({ message: "Brugeren blev slettet med succes" });
   } catch (err) {
     console.error(err);
