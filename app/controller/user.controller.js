@@ -34,13 +34,13 @@ exports.findOne = async (req, res) => {
 
 exports.delete = async (req, res) => {
   try {
-    const { user_name } = req.params;
+    const { user_id } = req.params;
 
     // Brug Sequelize's destroy method til at slette brugeren. Nok svarende til: DELETE FROM users WHERE user_name = 'tilfældigtBrugernavn'
     const deletedCount = await db.User.destroy({
-      where: { user_name: user_name },
+      where: { user_id: user_id },
     });
-    console.log('Username: ' + user_name);
+    console.log('Username: ' + user_id);
     if (deletedCount === 0) {
       // Hvis brugeren ikke blev fundet, bliver der ikke slettet noget
       return res.status(404).json({ message: "Brugeren blev ikke fundet" });
