@@ -5,12 +5,30 @@ const User = db.User;
 exports.findAll = async (req, res) => {
   try {
     const users = await db.User.findAll({
-      attributes: { exclude: ["user_password"] } // Ekskluder de her kolonner 
+      attributes: { exclude: ["user_password"] }, // Ekskluder de her kolonner
     });
     res.json(users);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Failed to fetch users" });
+    res.status(500).json({ message: "Kunne ikke hente en liste af brugere" });
+  }
+};
+
+exports.findOne = async (req, res) => {
+  try {
+    const user = await db.User.findOne({
+      where: { user_name: req.body.user_name }, // Udtag user_name fra body delen af HTTP anmodningen
+      attributes: { exclude: ["user_password"] },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "Brugeren blev ikke fundet" });
+    }
+
+    res.json(user); // Send the user data if found
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Kunne ikke hente en liste af brugere" });
   }
 };
 

@@ -6,7 +6,7 @@ module.exports = app => {
     let router = express.Router();
 
     router.get('/users', users.findAll);
-    // router.get('/users', users.findOne);
+    router.get('/users', users.findOne);
 
     router.post('/users', users.create);
 
