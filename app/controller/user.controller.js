@@ -36,7 +36,7 @@ exports.delete = async (req, res) => {
   try {
     const { user_id } = req.params;
 
-    // Brug Sequelize's destroy method til at slette brugeren. Nok svarende til: DELETE FROM users WHERE user_name = 'tilfældigtBrugernavn'
+    // Brug Sequelize's destroy method til at slette brugeren. -> DELETE FROM users WHERE user_id = user_id;
     const deletedCount = await db.User.destroy({
       where: { user_id: user_id },
     });
