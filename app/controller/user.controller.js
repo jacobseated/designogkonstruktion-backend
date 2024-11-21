@@ -4,7 +4,9 @@ const User = db.User;
 
 exports.findAll = async (req, res) => {
   try {
-    const users = await db.User.findAll();
+    const users = await db.User.findAll({
+      attributes: { exclude: ["user_password"] } // Ekskluder de her kolonner 
+    });
     res.json(users);
   } catch (err) {
     console.error(err);
@@ -14,15 +16,15 @@ exports.findAll = async (req, res) => {
 
 exports.create = async (req, res) => {
   try {
-    // Husk: En HTTP anmodning er en slags datastrøm, hvor henholdsvis "head" og "body" er adskilt med "CRLF"
-    //       karaktere. Head indeholder HTTP headers, og body indeholder dataen.
+    // Husk: En HTTP anmodning er en slags datastrøm, hvor henholdsvis "head" og "body" er adskilt med "CRLF" (\r\n),
+    //       karaktere. Head indeholder primært HTTP headers, imens body indeholder dataen.
 
     // Da vi har at gøre med en POST anmodning, så vil de forskellige parametre
     // være gemt i "body" delen af HTTP anmodningen. Sequelize kan automatisk pille dem ud for os ved brug af nedestående:
     const { user_name, user_mail, user_password, user_img, user_admin } =
       req.body; // Bemærk. Variabelnavne auto-matches med properties i HTTP body'en (JavaScript Object Destructuring syntax)
 
-      const hashed_password = await bcrypt.hash(user_password, 10);
+    const hashed_password = await bcrypt.hash(user_password, 10);
 
     // Her forsøger vi at indsætte dataen i databasen ved brug af sequelize
     const newUser = await db.User.create({
