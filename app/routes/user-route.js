@@ -10,7 +10,7 @@ module.exports = app => {
 
     router.post('/users', users.create);
 
-    // router.delete('/users', users.delete);
+    router.delete('/users/:username', users.delete);
     
     // router.put('/users', users.update);
 

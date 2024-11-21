@@ -32,6 +32,28 @@ exports.findOne = async (req, res) => {
   }
 };
 
+exports.delete = async (req, res) => {
+  try {
+    const { username } = req.params; // Extract the username from the route parameter
+
+    // Use Sequelize's destroy method to delete the user
+    const deletedCount = await db.User.destroy({
+      where: { user_name: username },
+    });
+    console.log(username);
+    if (deletedCount === 0) {
+      // No user was deleted because the user was not found
+      return res.status(404).json({ message: "Brugeren blev ikke fundet" });
+    }
+
+    // User successfully deleted
+    res.json({ message: "Brugeren blev slettet med succes" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Kunne ikke slette brugeren" });
+  }
+};
+
 exports.create = async (req, res) => {
   try {
     // Husk: En HTTP anmodning er en slags datastrøm, hvor henholdsvis "head" og "body" er adskilt med "CRLF" (\r\n),
