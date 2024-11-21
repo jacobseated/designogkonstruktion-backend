@@ -16,10 +16,10 @@ exports.findAll = async (req, res) => {
 
 exports.findOne = async (req, res) => {
   try {
-    const user = await db.User.findOne({
-      where: { user_name: req.body.user_name }, // Udtag user_name fra body delen af HTTP anmodningen
-      attributes: { exclude: ["user_password"] },
-    });
+    const { user_id } = req.params;
+    
+    // Find brugeren via ID
+    const user = await db.User.findByPk(user_id);
 
     if (!user) {
       return res.status(404).json({ message: "Brugeren blev ikke fundet" });
