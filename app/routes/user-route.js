@@ -12,7 +12,7 @@ module.exports = app => {
 
     router.delete('/users/:user_id', users.delete);
     
-    // router.put('/users', users.update);
+    router.patch('/users/:user_id', users.update);
 
     app.use(router); 
 };

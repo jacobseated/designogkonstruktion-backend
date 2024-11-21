@@ -79,6 +79,41 @@ exports.create = async (req, res) => {
     res.status(201).json(newUser);
   } catch (err) {
     console.error("Error creating user:", err);
-    res.status(500).json({ error: "Failed to create user" });
+    res.status(500).json({ error: "Kunne ikke oprette brugeren" });
+  }
+};
+
+exports.update = async (req, res) => {
+  try {
+    const { user_id } = req.params;
+    const { user_password, ...otherFields } = req.body;
+
+    // Find brugeren via ID
+    const user = await db.User.findByPk(user_id);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" }); // Return 404 if the user does not exist
+    }
+
+    // Vi opdatere dynamisk et objekt af data, som er sendt til os af brugeren
+    const updateData = {};
+    for (const [key, value] of Object.entries(otherFields)) {
+      if (value !== undefined) {
+        updateData[key] = value;
+      }
+    }
+
+    // Hvis kodeordet er blevet opdateret, så skal det hashes igen
+    if (user_password) {
+      updateData.user_password = await bcrypt.hash(user_password, 10);
+    }
+
+    // Send den opdaterede data (og kun den data, som er blevet opdateret)
+    const updatedUser = await user.update(updateData);
+
+    res.status(200).json(updatedUser); // Returner den opdaterede data. Det kan måske bruges af klienten
+  } catch (err) {
+    console.error("Error updating user:", err);
+    res.status(500).json({ error: "Der opstod en ukendt fejl." });
   }
 };
