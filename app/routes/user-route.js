@@ -1,5 +1,6 @@
 const users = require("../controller/user.controller");  
 const express = require("express");
+const authenticate = require("../middleware/authenticate");
 
 module.exports = app => {
     let router = express.Router();
@@ -9,9 +10,9 @@ module.exports = app => {
 
     router.post('/users', users.create);
 
-    router.delete('/users', users.delete);
+    // router.delete('/users', users.delete);
     
-    router.put('/users', users.update);
+    // router.put('/users', users.update);
 
     app.use(router); 
 };
