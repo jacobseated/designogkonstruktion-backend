@@ -79,7 +79,7 @@ exports.create = async (req, res) => {
     res.status(201).json(newUser);
   } catch (err) {
     console.error("Error creating user:", err);
-    res.status(500).json({ error: "Kunne ikke oprette brugeren" });
+    res.status(500).json({ message: "Kunne ikke oprette brugeren" });
   }
 };
 
@@ -92,7 +92,7 @@ exports.update = async (req, res) => {
     const user = await db.User.findByPk(user_id);
 
     if (!user) {
-      return res.status(404).json({ error: "User not found" }); // Return 404 if the user does not exist
+      return res.status(404).json({ message: "User not found" }); // Return 404 if the user does not exist
     }
 
     // Vi opdatere dynamisk et objekt af data, som er sendt til os af brugeren
