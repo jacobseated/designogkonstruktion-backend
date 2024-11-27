@@ -7,11 +7,11 @@ const User = sequelize.define('User', {
         primaryKey: true,
         autoIncrement: true
     },
-    user_name: {
+    user_fullname: {
         type: DataTypes.STRING,
         unique: true,
         validate: {
-            is: /^[a-zæøå0-9 ]+$/i // Tillad kun a-z + æøå og 1-9 i brugernavne
+            is: /^[a-zæøå ]+$/i // Tillad kun a-z + æøå og mellemrum i navne
         }
     },
     user_fullname: DataTypes.STRING,
