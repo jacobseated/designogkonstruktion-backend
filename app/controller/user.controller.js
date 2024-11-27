@@ -17,7 +17,7 @@ exports.findAll = async (req, res) => {
 exports.findOne = async (req, res) => {
   try {
     const user = await db.User.findOne({
-      where: { user_name: req.body.user_name }, // Udtag user_name fra body delen af HTTP anmodningen
+      where: { user_fullname: req.body.user_fullname }, // Udtag user_fullname fra body delen af HTTP anmodningen
       attributes: { exclude: ["user_password"] },
     });
 
@@ -61,14 +61,14 @@ exports.create = async (req, res) => {
 
     // Da vi har at gøre med en POST anmodning, så vil de forskellige parametre
     // være gemt i "body" delen af HTTP anmodningen. Sequelize kan automatisk pille dem ud for os ved brug af nedestående:
-    const { user_name, user_mail, user_password, user_img, user_admin } =
+    const { user_fullname, user_mail, user_password, user_img, user_admin } =
       req.body; // Bemærk. Variabelnavne auto-matches med properties i HTTP body'en (JavaScript Object Destructuring syntax)
 
     const hashed_password = await bcrypt.hash(user_password, 10);
 
     // Her forsøger vi at indsætte dataen i databasen ved brug af sequelize
     const newUser = await db.User.create({
-      user_name,
+      user_fullname,
       user_mail,
       user_password: hashed_password,
       user_img,

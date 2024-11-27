@@ -8,19 +8,19 @@ const User = db.User;
 exports.login = async (req, res) => {
   // Vi skal bruge de her variabler i næste try blok, så derfor er de defineret udenfor den første (de vil ellers være "scoped" til blokken nemlig)
   let user;
-  let user_name;
+  let user_fullname;
   let user_password;
 
   try {
-    ({ user_name, user_password } = req.body);
+    ({ user_fullname, user_password } = req.body);
 
     // Tjek om der overhovedet blev indstastet et brugernavn og kodeord
-    if (!user_name || !user_password) {
+    if (!user_fullname || !user_password) {
         return res.status(400).json({ message: "Brugernavn eller kodeord mangler!" });
     }
 
-    // Forsøg at foretage en: SELECT * FROM users WHERE user_name = 'user_name'
-    user = await db.User.findOne({ where: { user_name } });
+    // Forsøg at foretage en: SELECT * FROM users WHERE user_fullname = 'user_fullname'
+    user = await db.User.findOne({ where: { user_fullname } });
 
     // Hvis user er tom. Det burde dog ikke ske
     if (!user) {
@@ -44,7 +44,7 @@ exports.login = async (req, res) => {
     // På den måde kan brugeren logge ind, uden at vi behøver at huske eller gemme deres "token", og derved spare vi plads på serveren.
     // Vi bruger vores JWT_SECRET både til at generere nye- og validere eksisterende tokens ved login. Her opretter vi en ny token:
     const token = jwt.sign(
-      { id: user.user_id, username: user.user_name },
+      { id: user.user_id, username: user.user_fullname },
       process.env.JWT_SECRET,
       { expiresIn: "1h" } // Denne token udløber efter en time
     );
@@ -57,7 +57,7 @@ exports.login = async (req, res) => {
       maxAge: 3600000, // Udløbstid i millisekunder (1 time)
     });
 
-    res.json({ user: {username: user.user_name, name: user.user_fullname, email: user.user_mail, photo: '', communities:[]}}); // Send en simpel 200 status, sammen med detaljer om den indloggede bruger
+    res.json({ user: {username: user.user_fullname, email: user.user_mail, photo: '', communities:[]}}); // Send en simpel 200 status, sammen med detaljer om den indloggede bruger
     
   } catch (err) {
     // Noget helt andet, uventet, gik galt på server-siden, og vi sender derfor en general 500 besked (vi må selv tjekke loggen, for at debugge det)
