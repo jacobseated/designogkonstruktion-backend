@@ -1,11 +1,11 @@
 const { DataTypes } = require("sequelize"); // Henter "DataTypes" fra sequelize klassen
 const sequelize = require("../db/sequelize"); // Inkluder database forbindelsen
 
-// Nedestående model bliver brugt af sequelize til automatisk at oprette vores User tabel
+// Nedestående model bliver brugt af sequelize til automatisk at oprette vores chat_message tabel
 const chatMessage = sequelize.define(
   "chatMessage",
   {
-    chat_id: {
+    cm_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
@@ -14,18 +14,18 @@ const chatMessage = sequelize.define(
     user_id: {
       type: DataTypes.INTEGER,
       references: {
-          model: 'user', // user tabellen
-          key: 'user_id'  // Kolonnen i user_tabellen
+          model: 'user', // Navnet på user tabellen
+          key: 'user_id'  // Kolonnen i user tabellen
       },
-      onDelete: 'CASCADE'   // Hvis en bruger bliver slettet, så slet også chatbeskederne
+      onDelete: 'CASCADE'   // Hvis en chat bliver slettet, så slet også chatbeskederne
     },
     // Giv tids-kolonnerne et navn som passer med vores navngivning, samt default værdi
-    user_created: {
+    cm_created: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
     },
-    user_updated: {
+    cm_updated: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
