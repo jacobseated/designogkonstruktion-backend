@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt"); // Brugt til password hashing
 const jwt = require("jsonwebtoken"); // Brugt til at signere tokens når brugeren succesfuldt logger ind
 
 const db = require("../model");
-const User = db.User;
+const User = db.user;
 
 exports.login = async (req, res) => {
   // Vi skal bruge de her variabler i næste try blok, så derfor er de defineret udenfor den første (de vil ellers være "scoped" til blokken nemlig)
@@ -20,7 +20,7 @@ exports.login = async (req, res) => {
     }
 
     // Forsøg at foretage en: SELECT * FROM users WHERE user_fullname = 'user_fullname'
-    user = await db.User.findOne({ where: { user_fullname } });
+    user = await db.user.findOne({ where: { user_fullname } });
 
     // Hvis user er tom. Det burde dog ikke ske
     if (!user) {

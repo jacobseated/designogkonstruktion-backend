@@ -1,7 +1,8 @@
 const { DataTypes } = require('sequelize'); // Henter "DataTypes" fra sequelize klassen
 const sequelize = require('../db/sequelize'); // Inkluder database forbindelsen
 
-const User = sequelize.define('User', {
+// Nedestående model bliver brugt af sequelize til automatisk at oprette vores User tabel
+const user = sequelize.define('user', {
     user_id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -19,11 +20,11 @@ const User = sequelize.define('User', {
     user_img: DataTypes.BLOB('long'),
     user_admin: Boolean
 }, {
-    tableName: 'users',
+    tableName: 'user',
     // Opret automatisk tids-stempel kolonner (super smart)
     timestamps: true,
     createdAt: 'created_at', // Giv kolonnen et navn som passer med vores navngivning
     updatedAt: 'updated_at', // Giv kolonnen et navn som passer med vores navngivning
 });
 
-module.exports = User;
+module.exports = user;

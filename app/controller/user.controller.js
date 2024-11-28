@@ -1,10 +1,10 @@
 const db = require("../model");
 const bcrypt = require("bcrypt"); // Brugt til password hashing
-const User = db.User;
+const user = db.user;
 
 exports.findAll = async (req, res) => {
   try {
-    const users = await db.User.findAll({
+    const users = await db.user.findAll({
       attributes: { exclude: ["user_password"] }, // Ekskluder de her kolonner
     });
     res.json(users);
@@ -16,7 +16,7 @@ exports.findAll = async (req, res) => {
 
 exports.findOne = async (req, res) => {
   try {
-    const user = await db.User.findOne({
+    const user = await db.user.findOne({
       where: { user_mail: req.body.user_mail }, // Udtag user_mail fra body delen af HTTP anmodningen
       attributes: { exclude: ["user_password"] },
     });
@@ -38,7 +38,7 @@ exports.delete = async (req, res) => {
     const { user_id } = req.params;
 
     // Brug Sequelize's destroy method til at slette brugeren. -> DELETE FROM users WHERE user_id = user_id;
-    const deletedCount = await db.User.destroy({
+    const deletedCount = await db.user.destroy({
       where: { user_id: user_id },
     });
     if (deletedCount === 0) {
@@ -67,7 +67,7 @@ exports.create = async (req, res) => {
     const hashed_password = await bcrypt.hash(user_password, 10);
 
     // Her forsøger vi at indsætte dataen i databasen ved brug af sequelize
-    const newUser = await db.User.create({
+    const newUser = await db.user.create({
       user_fullname,
       user_mail,
       user_password: hashed_password,
@@ -89,7 +89,7 @@ exports.update = async (req, res) => {
     const { user_password, ...otherFields } = req.body;
 
     // Find brugeren via ID
-    const user = await db.User.findByPk(user_id);
+    const user = await db.user.findByPk(user_id);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" }); // Return 404 if the user does not exist
