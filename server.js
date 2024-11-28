@@ -1,12 +1,11 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const user = require('./app/model/user');
 
 const app = express();
 app.use(cors());
 
-const db = require("./app/model");
+const db = require("./app/model"); // Inkluder alle database modellerne
 db.sequelize.sync({ alter: true }) // Opret automatisk tabellerne hvis de ikke findes
   .then(() => {
     console.log('Database synchronized');
