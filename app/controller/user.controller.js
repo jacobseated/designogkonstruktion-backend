@@ -16,11 +16,12 @@ exports.findAll = async (req, res) => {
 
 exports.findOne = async (req, res) => {
   try {
-    const { user_id } = req.params;
-    
-    // Find brugeren via ID
-    const user = await db.User.findByPk(user_id);
+    const user = await db.User.findOne({
+      where: { user_mail: req.body.user_mail }, // Udtag user_mail fra body delen af HTTP anmodningen
+      attributes: { exclude: ["user_password"] },
+    });
 
+    // Tjek om brugeren blev fundet
     if (!user) {
       return res.status(404).json({ message: "Brugeren blev ikke fundet" });
     }
@@ -36,11 +37,10 @@ exports.delete = async (req, res) => {
   try {
     const { user_id } = req.params;
 
-    // Brug Sequelize's destroy method til at slette brugeren. Nok svarende til: DELETE FROM users WHERE user_name = 'tilfældigtBrugernavn'
+    // Brug Sequelize's destroy method til at slette brugeren. -> DELETE FROM users WHERE user_id = user_id;
     const deletedCount = await db.User.destroy({
       where: { user_id: user_id },
     });
-    console.log('Username: ' + user_id);
     if (deletedCount === 0) {
       // Hvis brugeren ikke blev fundet, bliver der ikke slettet noget
       return res.status(404).json({ message: "Brugeren blev ikke fundet" });
@@ -61,14 +61,14 @@ exports.create = async (req, res) => {
 
     // Da vi har at gøre med en POST anmodning, så vil de forskellige parametre
     // være gemt i "body" delen af HTTP anmodningen. Sequelize kan automatisk pille dem ud for os ved brug af nedestående:
-    const { user_name, user_mail, user_password, user_img, user_admin } =
+    const { user_fullname, user_mail, user_password, user_img, user_admin } =
       req.body; // Bemærk. Variabelnavne auto-matches med properties i HTTP body'en (JavaScript Object Destructuring syntax)
 
     const hashed_password = await bcrypt.hash(user_password, 10);
 
     // Her forsøger vi at indsætte dataen i databasen ved brug af sequelize
     const newUser = await db.User.create({
-      user_name,
+      user_fullname,
       user_mail,
       user_password: hashed_password,
       user_img,

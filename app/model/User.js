@@ -7,13 +7,6 @@ const User = sequelize.define('User', {
         primaryKey: true,
         autoIncrement: true
     },
-    user_name: {
-        type: DataTypes.STRING,
-        unique: true,
-        validate: {
-            is: /^[a-zæøå0-9]+$/i // Tillad kun a-z + æøå og 1-9 i brugernavne
-        }
-    },
     user_fullname: DataTypes.STRING,
     user_mail: {
         type: DataTypes.STRING,
@@ -22,13 +15,15 @@ const User = sequelize.define('User', {
             isEmail: true // Godkend kun gyldige e-mail adresser
         }
     },
-    user_password: DataTypes.STRING,
+    user_password: DataTypes.STRING(60),
     user_img: DataTypes.BLOB('long'),
-    user_admin: DataTypes.TINYINT,
-    user_communities: DataTypes.JSON // Hvilke communities, brugeren er medlem af! (De her burde normaliseres ud til en community tabel)
+    user_admin: Boolean
 }, {
     tableName: 'users',
-    timestamps: false 
+    // Opret automatisk tids-stempel kolonner (super smart)
+    timestamps: true,
+    createdAt: 'created_at', // Giv kolonnen et navn som passer med vores navngivning
+    updatedAt: 'updated_at', // Giv kolonnen et navn som passer med vores navngivning
 });
 
 module.exports = User;
