@@ -42,4 +42,11 @@ const user = sequelize.define(
   }
 );
 
+// Definer en many-to-many (optional) relation til community tabellen
+User.belongsToMany(Community, {
+  through: "community_membership", // Definer en many-to-many (optional) relation mellem community og user
+  foreignKey: "user_id", // Foreign key i user tabellen
+  otherKey: "community_id", // Foreign key i user tabellen
+});
+
 module.exports = user;
