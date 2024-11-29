@@ -1,10 +1,21 @@
 const sequelize = require('../db/sequelize'); // Inkluder database forbindelsen
 
-const User = require('./User'); // Inkluder "User" modellen, som beskriver "users" tabellen i databasen
+// Inkluder data modellerne for vores tabeller i databasen
+const user = require('./user');
+const community = require('./community');
+const communityMembership = require('./communityMembership');
+const chat = require('./chat');
+const chatMessage = require('./chatMessage');
+const userImage = require('./userImage');
 
 const db = {
     sequelize, 
-    User       // Tilføj flere data modeller her
+    user,
+    community,
+    communityMembership,
+    chat,
+    chatMessage,
+    userImage       // Tilføj flere data modeller her
 };
 
 module.exports = db;

@@ -1,45 +1,41 @@
 const { DataTypes } = require("sequelize"); // Henter "DataTypes" fra sequelize klassen
 const sequelize = require("../db/sequelize"); // Inkluder database forbindelsen
 
-// Nedestående model bliver brugt af sequelize til automatisk at oprette vores User tabel
-const user = sequelize.define(
-  "user",
+// Nedestående model bliver brugt af sequelize til automatisk at oprette vores chat_message tabel
+const chatMessage = sequelize.define(
+  "chatMessage",
   {
-    user_id: {
+    cm_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    user_fullname: DataTypes.STRING,
-    user_mail: {
-      type: DataTypes.STRING,
-      unique: true,
-      validate: {
-        isEmail: true, // Godkend kun gyldige e-mail adresser
+    chat_msg: DataTypes.STRING,
+    user_id: {
+      type: DataTypes.INTEGER,
+      references: {
+          model: 'user', // Navnet på user tabellen
+          key: 'user_id'  // Kolonnen i user tabellen
       },
+      onDelete: 'CASCADE'   // Hvis en chat bliver slettet, så slet også chatbeskederne
     },
-    // En bcrypt hashværdi er kun 60 tegn (bytes) lang
-    user_password: DataTypes.STRING(60),
-    user_img: DataTypes.BLOB("long"),
-    user_admin: DataTypes.BOOLEAN,
-
     // Giv tids-kolonnerne et navn som passer med vores navngivning, samt default værdi
-    user_created: {
+    cm_created: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
     },
-    user_updated: {
+    cm_updated: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
     },
   },
   {
-    tableName: "user",
+    tableName: "chat_message",
     // Opret automatisk tids-stempel kolonner (super smart, men virker vist ikke med default værdier, så vi gør det manuelt)
     timestamps: false, // Kan ikke bruges, da den ikke laver defaultværdier til felterne
   }
 );
 
-module.exports = user;
+module.exports = chatMessage;
