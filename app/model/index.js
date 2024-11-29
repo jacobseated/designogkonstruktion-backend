@@ -1,7 +1,7 @@
 const sequelize = require('../db/sequelize'); // Inkluder database forbindelsen
 
 // Inkluder data modellerne for vores tabeller i databasen
-const user = require('./user');
+const user = require('./User');
 const community = require('./community');
 const communityMembership = require('./communityMembership');
 const chat = require('./chat');

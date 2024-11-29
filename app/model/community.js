@@ -21,4 +21,15 @@ const community = sequelize.define(
   }
 );
 
+// Trigger for deleting chat messages when a community is deleted
+// This command creates that trigger in the database
+community.afterSync(async () => {
+  await sequelize.query(`
+    CREATE TRIGGER delete_category_messages
+    AFTER DELETE ON community
+    FOR EACH ROW 
+    DELETE FROM chat WHERE community_id = OLD.community_id;
+  `);
+});
+
 module.exports = community;
