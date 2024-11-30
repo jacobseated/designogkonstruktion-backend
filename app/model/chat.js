@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize"); // Henter "DataTypes" fra sequelize 
 const sequelize = require("../db/sequelize"); // Inkluder database forbindelsen
 
 // Nedestående model bliver brugt af sequelize til automatisk at oprette vores chat tabel
-const chat = sequelize.define(
+const Chat = sequelize.define(
   "chat",
   {
     chat_id: {
@@ -10,13 +10,32 @@ const chat = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
+    user_id: {
+      type: DataTypes.INTEGER,
+      references: {
+          model: 'user', // Navnet på tabellen
+          key: 'user_id'  // Primary key Kolonnen i tabellen
+      },
+      onDelete: 'CASCADE'   // Hvis en bruger bliver slettet, så slet også deres chat beskeder
+    },
     community_id: {
       type: DataTypes.INTEGER,
       references: {
-          model: 'community', // Navnet på community tabellen
-          key: 'community_id'  // Kolonnen i community tabellen
+          model: 'community', // Navnet på tabellen
+          key: 'community_id'  // Primary key Kolonnen i tabellen
       },
-      onDelete: 'CASCADE'   // Hvis et community bliver slettet, så slet også chatten
+      onDelete: 'CASCADE',   // Hvis et community bliver slettet, så slet også chatten
+    },
+    chat_message: DataTypes.STRING,
+
+    // Tidsstempel kolonner. Vi definere dem til:
+    // - at være DATETIME
+    // - ikke at tillade NULL værdier som input. Eks. Hvis nogen forsøger at indsætte NULL som værdi, opstår der en fejl
+    // - NOW() skulle være default værdien. Dvs. Den indsætter automatisk et tidstempel for "nu", så vi slipper for at beregne det selv
+    message_created: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
     },
   },
   {
@@ -25,4 +44,4 @@ const chat = sequelize.define(
   }
 );
 
-module.exports = chat;
+module.exports = Chat;

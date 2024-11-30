@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize"); // Henter "DataTypes" fra sequelize 
 const sequelize = require("../db/sequelize"); // Inkluder database forbindelsen
 
 // Nedestående model bliver brugt af sequelize til automatisk at oprette vores tabel i databasen
-const communityMembership = sequelize.define(
+const CommunityMembership = sequelize.define(
   "communityMembership",
   {
     membership_id: {
@@ -33,4 +33,4 @@ const communityMembership = sequelize.define(
   }
 );
 
-module.exports = communityMembership;
+module.exports = CommunityMembership;
