@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize"); // Henter "DataTypes" fra sequelize 
 const sequelize = require("../db/sequelize"); // Inkluder database forbindelsen
 
 // Nedestående model bliver brugt af sequelize til automatisk at oprette vores tabel i databasen
-const communityMembership = sequelize.define(
+const CommunityMembership = sequelize.define(
   "communityMembership",
   {
     membership_id: {
@@ -33,11 +33,4 @@ const communityMembership = sequelize.define(
   }
 );
 
-// Definer en many-to-many (optional) relation til user tabellen
-Community.belongsToMany(User, {
-  through: "community_membership", // Navnet på tabellen, der skal joines med
-  foreignKey: "community_id", // Foreign key i community_membership tabellen
-  otherKey: "user_id", // Foreign key i community_membership tabellen
-});
-
-module.exports = communityMembership;
+module.exports = CommunityMembership;

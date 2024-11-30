@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize"); // Henter "DataTypes" fra sequelize 
 const sequelize = require("../db/sequelize"); // Inkluder database forbindelsen
 
 // Nedestående model bliver brugt af sequelize til automatisk at oprette vores User tabel
-const user = sequelize.define(
+const User = sequelize.define(
   "user",
   {
     user_id: {
@@ -20,10 +20,14 @@ const user = sequelize.define(
     },
     // En bcrypt hashværdi er kun 60 tegn (bytes) lang
     user_password: DataTypes.STRING(60),
+    
     user_img: DataTypes.BLOB("long"),
     user_admin: DataTypes.BOOLEAN,
 
-    // Giv tids-kolonnerne et navn som passer med vores navngivning, samt default værdi
+    // Tidsstempel kolonner. Vi definere dem til:
+    // - at være DATETIME
+    // - ikke at tillade NULL værdier som input. Eks. Hvis nogen forsøger at indsætte NULL som værdi, opstår der en fejl
+    // - NOW() skulle være default værdien. Dvs. Den indsætter automatisk et tidstempel for "nu", så vi slipper for at beregne det selv
     user_created: {
       type: DataTypes.DATE,
       allowNull: false,
@@ -42,11 +46,4 @@ const user = sequelize.define(
   }
 );
 
-// Definer en many-to-many (optional) relation til community tabellen
-User.belongsToMany(Community, {
-  through: "community_membership", // Definer en many-to-many (optional) relation mellem community og user
-  foreignKey: "user_id", // Foreign key i user tabellen
-  otherKey: "community_id", // Foreign key i user tabellen
-});
-
-module.exports = user;
+module.exports = User;
