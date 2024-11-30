@@ -1,9 +1,10 @@
 require("dotenv").config(); // Indlæs miljø-variabler (.env environment variabler)
 const bcrypt = require("bcrypt"); // Brugt til password hashing
 const jwt = require("jsonwebtoken"); // Brugt til at signere tokens når brugeren succesfuldt logger ind
+const community = require("./../model/community");
 
 const db = require("../model");
-const userRepository = db.user;
+const userRepository = db.User;
 
 exports.login = async (req, res) => {
   // Vi skal bruge de her variabler i næste try blok, så derfor er de defineret udenfor den første (de vil ellers være "scoped" til blokken nemlig)
@@ -20,7 +21,21 @@ exports.login = async (req, res) => {
     }
 
     // Forsøg at foretage en: SELECT * FROM users WHERE user_fullname = 'user_fullname'
-    user = await userRepository.findOne({ where: { user_mail } });
+    user = await userRepository.findOne({
+      where: { user_mail },
+      include: {
+        model: community,
+
+        // through: Hvilke kolonner skal med fra vores junction tabel? Tom = ingen.
+        //          bemærk, hvis vi fjerner denne vil hele junction tabellen blive inkluderet i
+        //          den retunerede data under en "communityMembership" property. Lav evt console.log() for at se strukturen!
+        //          Her har jeg valgt at skjule alting i communityMembership, fordi det er kun community indholdet vi vil have med ud
+        through: {
+          attributes: [] 
+        }
+
+      }
+    });
 
     // Hvis user er tom. Det burde dog ikke ske
     if (!user) {
@@ -57,7 +72,7 @@ exports.login = async (req, res) => {
       maxAge: 3600000, // Udløbstid i millisekunder (1 time)
     });
 
-    res.json({ user: {fullname: user.user_fullname, email: user.user_mail, photo: '', communities:[]}}); // Send en simpel 200 status, sammen med detaljer om den indloggede bruger
+    res.json({ user: {fullname: user.user_fullname, email: user.user_mail, photo: '', communities:user.communities}}); // Send en simpel 200 status, sammen med detaljer om den indloggede bruger
     
   } catch (err) {
     // Noget helt andet, uventet, gik galt på server-siden, og vi sender derfor en general 500 besked (vi må selv tjekke loggen, for at debugge det)
