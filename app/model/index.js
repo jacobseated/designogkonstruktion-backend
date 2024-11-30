@@ -1,5 +1,6 @@
 const sequelize = require('../db/sequelize'); // Inkluder database forbindelsen
 
+
 // Inkluder data modellerne til vores ORM (Object-Relational Mapping)
 // Sagt med almindeligt Dansk, så repræsentere modellerne tabellerne i vores database
 // Sequelize bruger dem til, automatisk at oprette og opdatere database layout, samt at foretage JOINs mellem tabellerne
@@ -18,6 +19,7 @@ const db = {
     Community,
     CommunityMembership,
     Chat,
+    // Fjernede user_image indtil videre
     // Tilføj flere data modeller her
 };
 
