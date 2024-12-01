@@ -5,14 +5,14 @@ const sequelize = require("../sequelize");
 
 const baseDataSQL = {
   user: `
-  INSERT INTO user (user_id, user_fullname, user_mail, user_password, user_img, user_admin, user_created, user_updated) VALUES
-  (1, 'Ulla Hasen', 'ulla@example.com', '$2b$10$AiLDjp3e4arhAcN.KVCSlekUdkm4BB2IsUi.QkKojvY1jEeTujwlK', NULL, 0, NOW(), NOW()),
-  (2, 'Jonas', 'jon@vfl.dk', '$2b$10$AiLDjp3e4arhAcN.KVCSlekUdkm4BB2IsUi.QkKojvY1jEeTujwlK', NULL, 1, NOW(), NOW()),
-  (3, 'Jacob Kristensen', 'jac@vfl.dk', '$2b$10$AiLDjp3e4arhAcN.KVCSlekUdkm4BB2IsUi.QkKojvY1jEeTujwlK', NULL, 1, NOW(), NOW()),
-  (4, 'David', 'dav@vfl.dk', '$2b$10$AiLDjp3e4arhAcN.KVCSlekUdkm4BB2IsUi.QkKojvY1jEeTujwlK', NULL, 1, NOW(), NOW()),
-  (5, 'Martin', 'mac@vfl.dk', '$2b$10$AiLDjp3e4arhAcN.KVCSlekUdkm4BB2IsUi.QkKojvY1jEeTujwlK', NULL, 1, NOW(), NOW()),
-  (6, 'Eivind Johannes Goldenstein Hansen', 'eivind@example.com', '$2b$10$AiLDjp3e4arhAcN.KVCSlekUdkm4BB2IsUi.QkKojvY1jEeTujwlK', NULL, 1, NOW(), NOW()),
-  (7, 'Karen Elisabeth Johannesson', 'karen@example.com', '$2b$10$AiLDjp3e4arhAcN.KVCSlekUdkm4BB2IsUi.QkKojvY1jEeTujwlK', NULL, 0, NOW(), NOW());`,
+  INSERT INTO user (user_id, user_fullname, user_mail, user_password, user_admin, user_created, user_updated) VALUES
+  (1, 'Ulla Hasen', 'ulla@example.com', '$2b$10$AiLDjp3e4arhAcN.KVCSlekUdkm4BB2IsUi.QkKojvY1jEeTujwlK', 0, NOW(), NOW()),
+  (2, 'Jonas', 'jon@vfl.dk', '$2b$10$AiLDjp3e4arhAcN.KVCSlekUdkm4BB2IsUi.QkKojvY1jEeTujwlK', 1, NOW(), NOW()),
+  (3, 'Jacob Kristensen', 'jac@vfl.dk', '$2b$10$AiLDjp3e4arhAcN.KVCSlekUdkm4BB2IsUi.QkKojvY1jEeTujwlK', 1, NOW(), NOW()),
+  (4, 'David', 'dav@vfl.dk', '$2b$10$AiLDjp3e4arhAcN.KVCSlekUdkm4BB2IsUi.QkKojvY1jEeTujwlK', 1, NOW(), NOW()),
+  (5, 'Martin', 'mac@vfl.dk', '$2b$10$AiLDjp3e4arhAcN.KVCSlekUdkm4BB2IsUi.QkKojvY1jEeTujwlK', 1, NOW(), NOW()),
+  (6, 'Eivind Johannes Goldenstein Hansen', 'eivind@example.com', '$2b$10$AiLDjp3e4arhAcN.KVCSlekUdkm4BB2IsUi.QkKojvY1jEeTujwlK', 1, NOW(), NOW()),
+  (7, 'Karen Elisabeth Johannesson', 'karen@example.com', '$2b$10$AiLDjp3e4arhAcN.KVCSlekUdkm4BB2IsUi.QkKojvY1jEeTujwlK', 0, NOW(), NOW());`,
   community: `
 INSERT INTO community (community_id, community_name) VALUES
 (3, 'Fiskeklubben'),

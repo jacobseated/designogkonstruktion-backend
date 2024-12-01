@@ -9,6 +9,7 @@ const user = require('./user'); // Tabellen til brugere
 const community = require('./community'); // Tabellen til Fællesskaber
 const communityMembership = require('./communityMembership'); // Tabellen til fællesskabs-medlemskab (Junction Tabel: binder user og community sammen)
 const chat = require('./chat'); // Chat tabellen
+const userImage = require('./userImage'); // Chat tabellen
 
 // Definer database associations (Ligesom på ER diagrammet)
 require('./associations');
@@ -19,7 +20,7 @@ const db = {
     community,
     communityMembership,
     chat,
-    // Fjernede user_image indtil videre
+    userImage
     // Tilføj flere data modeller her
 };
 

@@ -34,6 +34,7 @@ app.use(bodyParser.json());
 // endpoints
 require("./app/routes/user-route")(app);
 require("./app/routes/session-route")(app);
+require("./app/routes/userImage-route")(app);
 
 const PORT = 8081;
 app.listen(PORT, () => {
