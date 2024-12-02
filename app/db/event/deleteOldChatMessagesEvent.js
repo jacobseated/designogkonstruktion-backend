@@ -6,11 +6,12 @@ const deleteOldChatMessagesEvent = async () => {
     const eventSQL = `
     CREATE EVENT IF NOT EXISTS delete_old_chat_messages
     ON SCHEDULE EVERY 1 DAY
-    STARTS CURRENT_TIMESTAMP
-    DO
-      BEGIN
-        DELETE FROM chat WHERE message_created < NOW() - INTERVAL 3 MONTH;
-      END
+    STARTS '2024-11-29 00:00:00'
+    ENDS '2030-12-31 23:59:59'
+    ON COMPLETION PRESERVE
+    ENABLE
+    COMMENT 'Command deletes 3 month old messages.'
+    DO DELETE FROM chat WHERE message_created < NOW() - INTERVAL 3 MONTH;
   `;
 
   // Kør koden og tjek om der var fejl
