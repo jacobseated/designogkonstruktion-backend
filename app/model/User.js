@@ -20,8 +20,6 @@ const User = sequelize.define(
     },
     // En bcrypt hashværdi er kun 60 tegn (bytes) lang
     user_password: DataTypes.STRING(60),
-    
-    user_img: DataTypes.BLOB("long"),
     user_admin: DataTypes.BOOLEAN,
 
     // Tidsstempel kolonner. Vi definere dem til:

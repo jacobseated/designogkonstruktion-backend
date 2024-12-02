@@ -1,6 +1,7 @@
 require("dotenv").config(); // Indlæs miljø-variabler (.env environment variabler)
 const bcrypt = require("bcrypt"); // Brugt til password hashing
 const jwt = require("jsonwebtoken"); // Brugt til at signere tokens når brugeren succesfuldt logger ind
+const community = require("./../model/community");
 
 const db = require("../model");
 const userRepository = db.user;
@@ -16,17 +17,32 @@ exports.login = async (req, res) => {
 
     // Tjek om der overhovedet blev indstastet et brugernavn og kodeord
     if (!user_mail || !user_password) {
-        return res.status(400).json({ message: "Brugernavn eller kodeord mangler!" });
+      return res
+        .status(400)
+        .json({ message: "Brugernavn eller kodeord mangler!" });
     }
 
     // Forsøg at foretage en: SELECT * FROM users WHERE user_fullname = 'user_fullname'
-    user = await userRepository.findOne({ where: { user_mail } });
+    user = await userRepository.findOne({
+      where: { user_mail },
+
+      include: {
+        model: community,
+
+        // through: Hvilke kolonner skal med fra vores junction tabel? Tom = ingen.
+        //          bemærk, hvis vi fjerner denne vil hele junction tabellen blive inkluderet i
+        //          den retunerede data under en "communityMembership" property. Lav evt console.log() for at se strukturen!
+        //          Her har jeg valgt at skjule alting i communityMembership, fordi det er kun community indholdet vi vil have med ud
+        through: {
+          attributes: [],
+        },
+      },
+    });
 
     // Hvis user er tom. Det burde dog ikke ske
     if (!user) {
       return res.status(401).json({ message: "Brugeren blev ikke fundet" });
     }
-    
   } catch (err) {
     // Hvis alt ovenstående fejler, så antag at brugeren ikke blev fundet
     return res.status(404).json({ message: "Brugeren blev ikke fundet" });
@@ -36,7 +52,9 @@ exports.login = async (req, res) => {
   try {
     // Sammenlign det indtastede kodeord med den gemte password-hash
     if (!(await bcrypt.compare(user_password, user.user_password))) {
-      return res.status(401).json({ message: "Ugyldigt brugernavn eller kodeord!" }); // Retuner en 401 fejl, hvis brugeren eks indtaster et forkert kodeord
+      return res
+        .status(401)
+        .json({ message: "Ugyldigt brugernavn eller kodeord!" }); // Retuner en 401 fejl, hvis brugeren eks indtaster et forkert kodeord
     }
 
     // Om stateless autentificering:
@@ -57,8 +75,14 @@ exports.login = async (req, res) => {
       maxAge: 3600000, // Udløbstid i millisekunder (1 time)
     });
 
-    res.json({ user: {fullname: user.user_fullname, email: user.user_mail, photo: '', communities:[]}}); // Send en simpel 200 status, sammen med detaljer om den indloggede bruger
-    
+    res.json({
+      user: {
+        userId: user.user_id,
+        fullname: user.user_fullname,
+        email: user.user_mail,
+        communities: user.communities,
+      },
+    }); // Send en simpel 200 status, sammen med detaljer om den indloggede bruger
   } catch (err) {
     // Noget helt andet, uventet, gik galt på server-siden, og vi sender derfor en general 500 besked (vi må selv tjekke loggen, for at debugge det)
     console.error("Error during login:", err);

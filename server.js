@@ -1,10 +1,16 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 const db = require("./app/model"); // Inkluder alle database modellerne
 
+
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:8080", // Replace with your frontend's URL
+  credentials: true, // Allow cookies to be sent with requests
+}));
+app.use(cookieParser());
 
 // Når vi køre "node server.js", så blier alting genoprettet
 // Bemærk: kun imens vi udvikler. Når vi er færdige skal denne funktionalitet slåes fra ved at sætte MODE_EN=prod, så vi ikke mister data
@@ -34,6 +40,9 @@ app.use(bodyParser.json());
 // endpoints
 require("./app/routes/user-route")(app);
 require("./app/routes/session-route")(app);
+require("./app/routes/community-route")(app);
+require("./app/routes/communityMembership-route")(app);
+require("./app/routes/userImage-route")(app);
 
 const PORT = 8081;
 app.listen(PORT, () => {
