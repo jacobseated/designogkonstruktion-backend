@@ -45,7 +45,11 @@ INSERT INTO chat (chat_id, user_id, community_id, chat_message, message_created)
 (36, 6, 3, 'Test message 36', '2024-11-02 20:25:00'),
 (37, 1, 1, 'Test message 37', '2024-10-29 09:45:00'),
 (39, 3, 3, 'Test message 39', '2024-10-23 11:30:00'),
-(40, 4, 1, 'Test message 40', '2024-10-20 19:00:00')`,
+(40, 7, 1, 'Altså, jeg forstår simpelthen ikke denne opskrift! Har tre gange pillet det op nu, og det ligner stadig alt andet end en sweater. Måske er det min hjerne eller opskriften, men noget går HELT galt her!', '2024-11-20 18:42:00'),
+(41, 1, 1, 'Helt ærligt, Karen! Hvis du nu bare fulgte opskriften ORDENTLIGT og ikke fumlede rundt hele tiden, så var du nok færdig nu! Det er altså ikke opskriftens skyld, hvis man ikke læser den ordentligt!', '2024-11-20 18:49:00'),
+(42, 7, 1, 'Jamen altså, Ulla, det er jo lige netop dét! Din håndskrift er som hieroglyffer – ingen kan læse det! Hvis du skrev tydeligt, ville jeg ikke sidde her og bakse med noget, der ligner en strikket kludedukke!', '2024-11-20 18:55:00'),
+(43, 4, 1, 'STOP så begge to! Denne opførsel hører ingen steder hjemme her i gruppen. Jeg forventer, at I viser respekt for hinanden og holder en ordentlig tone. Én gang til, og I bliver begge bandlyst fra chatten! Få det nu løst som voksne mennesker.', '2024-11-20 19:00:00')
+`,
 
   communityMembership: `
 INSERT INTO community_membership (membership_id, user_id, community_id) VALUES
