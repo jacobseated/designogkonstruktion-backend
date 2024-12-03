@@ -2,7 +2,6 @@ require("dotenv").config(); // Indlæs miljø-variabler (.env environment variab
 const jwt = require("jsonwebtoken");
 
 const authenticate = (req, res, next) => {
-  console.log(req.cookies);
   const token = req.cookies?.authToken;
   if (!token) {
     return res.status(401).json({ message: "Unauthorized to do that" });
