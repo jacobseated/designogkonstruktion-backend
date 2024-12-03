@@ -80,12 +80,13 @@ exports.login = async (req, res) => {
       maxAge: 3600000, // Udløbstid i millisekunder (1 time)
     });
 
-    res.json({
+    return res.json({
       user: {
         userId: user.user_id,
         fullname: user.user_fullname,
         email: user.user_mail,
         communities: user.communities,
+        admin: user.user_admin
       },
     }); // Send en simpel 200 status, sammen med detaljer om den indloggede bruger
   } catch (err) {
