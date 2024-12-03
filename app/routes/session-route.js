@@ -7,6 +7,7 @@ module.exports = app => {
     // Example session endpoints
     router.post('/login', sessionController.login);
     router.post('/logout', sessionController.logout);
+    router.get('/handshake', sessionController.check);
 
     app.use(router);
 };
