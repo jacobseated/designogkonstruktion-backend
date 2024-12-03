@@ -28,6 +28,14 @@ community.hasOne(chat, {
 // Definer en one-to-many relation med chat tabellen fra community tabellen
 community.hasMany(chat, { foreignKey: 'community_id' });
 
+user.hasMany(chat, {
+  foreignKey: "user_id",
+  onDelete: "CASCADE",
+});
+chat.belongsTo(user, {
+  foreignKey: "user_id",
+});
+
 communityMembership.belongsTo(community, { foreignKey: "community_id" });
 
 module.exports = {};
