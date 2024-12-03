@@ -101,18 +101,51 @@ exports.logout = (req, res) => {
   res.json({ message: "Logged out successfully" });
 };
 
-exports.check = (req, res) => {
-  const token = req.headers.authorization?.split(" ")[1];
+exports.check = async (req, res) => {
+  let decoded;
+  const token = req.cookies.authToken;
   if (!token) {
     return res.status(401).json({ message: "No token provided" });
   }
 
-  // Klienten (browseren) har givet os en token, som vi skal tjekke gyldigheden af;
-  // det kan vi gøre med jwt.verify sammen med vores JWT_SECRET
+  // Tjek om token stadig er gyldig
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    res.json({ session: decoded });
+    decoded = jwt.verify(token, process.env.JWT_SECRET);
   } catch (err) {
     return res.status(401).json({ message: "Invalid or expired token" });
   }
+
+  // Forsøg at foretage en: SELECT * FROM users WHERE user_id = 'user_id'
+  try {
+    const user_id = decoded.id;
+    user = await userRepository.findOne({
+      where: { user_id },
+      include: {
+        model: community,
+        through: {
+          attributes: [],
+        },
+      },
+    });
+
+    // Hvis user er tom.
+    if (!user) {
+      return res.status(401).json({ message: "Brugeren blev ikke fundet" });
+    }
+
+    // Send detaljerne tilbage til klientens
+    res.json({
+      user: {
+        userId: user.user_id,
+        fullname: user.user_fullname,
+        email: user.user_mail,
+        communities: user.communities,
+      },
+    });
+  } catch (err) {
+    // Hvis alt ovenstående fejler, så antag at brugeren ikke blev fundet
+    return res.status(404).json({ message: "Brugeren blev ikke fundet" });
+  }
+
+
 };

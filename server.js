@@ -43,6 +43,7 @@ require("./app/routes/session-route")(app);
 require("./app/routes/community-route")(app);
 require("./app/routes/communityMembership-route")(app);
 require("./app/routes/userImage-route")(app);
+require("./app/routes/chat-route")(app);
 
 const PORT = 8081;
 app.listen(PORT, () => {
