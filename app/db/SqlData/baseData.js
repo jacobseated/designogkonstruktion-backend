@@ -72,7 +72,7 @@ INSERT INTO community_membership (membership_id, user_id, community_id) VALUES
 };
 
 // Funktion til at indsætte vores dummy-data
-const insertBaseDataSQL = async () => {
+/*const insertBaseDataSQL = async () => {
   try {
     for (const [table, query] of Object.entries(baseDataSQL)) {
       await sequelize.query(query); // Execute the insert query
@@ -84,4 +84,4 @@ const insertBaseDataSQL = async () => {
 };
 
 // Eksporter funktionen, så vi kan kalde den fra server.js
-module.exports = insertBaseDataSQL;
+module.exports = insertBaseDataSQL;*/
