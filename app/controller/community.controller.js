@@ -17,8 +17,10 @@ exports.findAll = async (req, res) => {
 // Funktion til at hente detaljerne om en enkelt community via community_id (GET)
 exports.findOne = async (req, res) => {
   try {
+    const { community_id } = req.params;
+
     const community = await communitRepository.findOne({
-      where: { community_id: req.body.community_id }, // Udtag user_id fra body delen af HTTP anmodningen
+      where: { community_id: community_id }, // Udtag user_id fra body delen af HTTP anmodningen
     });
 
     // Tjek om community blev fundet
