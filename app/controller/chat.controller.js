@@ -24,11 +24,13 @@ exports.findAll = async (req, res) => {
 
 exports.create = async (req, res) => {
   try {
-    const { user_id, community_id } = req.body;
+    const { community_id } = req.params;
+    const { user_id, chat_message } = req.body;
 
     await chatRepository.create({
       user_id,
       community_id,
+      chat_message,
     });
 
     res.status(201).json({ message: "Chatbeskeden blev sendt!" });
