@@ -146,6 +146,7 @@ exports.check = async (req, res) => {
         fullname: user.user_fullname,
         email: user.user_mail,
         communities: user.communities,
+        admin: user.user_admin
       },
     });
   } catch (err) {
