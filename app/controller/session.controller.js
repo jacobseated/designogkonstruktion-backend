@@ -62,25 +62,31 @@ exports.login = async (req, res) => {
     // På den måde kan brugeren logge ind, uden at vi behøver at huske eller gemme deres "token", og derved spare vi plads på serveren.
     // Vi bruger vores JWT_SECRET både til at generere nye- og validere eksisterende tokens ved login. Her opretter vi en ny token:
     const token = jwt.sign(
-      { id: user.user_id, email: user.user_mail },
+      { 
+        // Her gemmer vi de parametre, som vi ønsker at gøre tilgængelige andre steder i vores backend
+        id: user.user_id,
+        email: user.user_mail,
+        admin: user.user_admin
+      },
       process.env.JWT_SECRET,
       { expiresIn: "1h" } // Denne token udløber efter en time
     );
 
     // Her sætter vi en cookie med navnet "autoToken", som vi senere kan bruge til at tjekke om brugeren er logget ind
     res.cookie("authToken", token, {
-      httpOnly: true, // Til at forhindre adgang fra scripts
+      httpOnly: true, // Til at forhindre adgang fra scripts i vores frontend (Browser afhængig, men mere sikker. Nogle browser ignorere det, og giver alligevel adgang).
       // secure: true, // HTTPS
       sameSite: "Strict", // Forhindre andre sider i at sende os authToken
       maxAge: 3600000, // Udløbstid i millisekunder (1 time)
     });
 
-    res.json({
+    return res.json({
       user: {
         userId: user.user_id,
         fullname: user.user_fullname,
         email: user.user_mail,
         communities: user.communities,
+        admin: user.user_admin
       },
     }); // Send en simpel 200 status, sammen med detaljer om den indloggede bruger
   } catch (err) {
@@ -93,17 +99,17 @@ exports.login = async (req, res) => {
 
 exports.logout = (req, res) => {
   // For at logge brugeren ud kan vi slette den cookie vi satte tidligere
-  res.clearCookie("authToken", {
+  res.cookie("authToken", "", {
     httpOnly: true,
     sameSite: "Strict",
-    // secure: true, // Include this if the original cookie was set with secure
+    expires: new Date(0), // Udløb omgående
   });
   res.json({ message: "Logged out successfully" });
 };
 
 exports.check = async (req, res) => {
   let decoded;
-  const token = req.cookies.authToken;
+  const token = req.cookies?.authToken;
   if (!token) {
     return res.status(401).json({ message: "No token provided" });
   }
@@ -140,6 +146,7 @@ exports.check = async (req, res) => {
         fullname: user.user_fullname,
         email: user.user_mail,
         communities: user.communities,
+        admin: user.user_admin
       },
     });
   } catch (err) {
