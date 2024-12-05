@@ -10,9 +10,9 @@ module.exports = app => {
 
     router.post('/users', users.create);
 
-    router.delete('/users/:user_id', users.delete);
+    router.delete('/users/:user_id', authenticate, users.delete);
     
-    router.patch('/users/:user_id', users.update);
+    router.patch('/users/:user_id', authenticate, users.update);
 
     app.use(router); 
 };

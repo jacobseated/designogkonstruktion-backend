@@ -28,10 +28,13 @@ community.hasOne(chat, {
 // Definer en one-to-many relation med chat tabellen fra community tabellen
 community.hasMany(chat, { foreignKey: 'community_id' });
 
+// For at udhente user.fullname via sequelize, så var det nødvendigt at definere relationen mellem chat og user tabellen
+// En user kan have mange chat beskeder (one-to-many)
 user.hasMany(chat, {
   foreignKey: "user_id",
   onDelete: "CASCADE",
 });
+// Hver chat-besked tilhøre en bruger, så vi har en many-to-one relation
 chat.belongsTo(user, {
   foreignKey: "user_id",
 });
