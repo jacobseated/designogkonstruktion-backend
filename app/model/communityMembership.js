@@ -16,7 +16,7 @@ const CommunityMembership = sequelize.define(
           model: 'user', // Navnet på user tabellen
           key: 'user_id'  // Kolonnen i user tabellen
       },
-      onDelete: 'CASCADE'   // Hvis en chat bliver slettet, så slet også chatbeskederne
+      onDelete: 'CASCADE'   // Hvis et forum bliver slettet, så slet også forum beskederne med den bruger
     },
     community_id: {
       type: DataTypes.INTEGER,
@@ -24,7 +24,7 @@ const CommunityMembership = sequelize.define(
           model: 'community', // Navnet på user tabellen
           key: 'community_id'  // Kolonnen i user tabellen
       },
-      onDelete: 'CASCADE'   // Hvis en chat bliver slettet, så slet også chatbeskederne
+      onDelete: 'CASCADE'   // Hvis et forum bliver slettet, så slet også forum beskederne
     },
   },
   {

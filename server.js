@@ -22,11 +22,11 @@ if (process.env.NODE_ENV === "development") {
       console.log("Database synchronized");
 
       // Define the SQL we need to execute when starting the server
-      const createChatDeleteEvent = require("./app/db/event/deleteOldChatMessagesEvent"); // Vores database event til at slette gamle chatbeskeder
+      const createForumDeleteEvent = require("./app/db/event/deleteOldForumMessagesEvent"); // Vores database event til at slette gamle forum beskeder
       const baseDataSql = require("./app/db/SqlData/baseData"); // Inkluder vores grundlæggende data via SQL inserts
 
       // Opret vores event
-      createChatDeleteEvent();
+      createForumDeleteEvent();
       // Indsæt grundlæggende data i tabellerne
       baseDataSql();
     })
@@ -43,7 +43,7 @@ require("./app/routes/session-route")(app);
 require("./app/routes/community-route")(app);
 require("./app/routes/communityMembership-route")(app);
 require("./app/routes/userImage-route")(app);
-require("./app/routes/chat-route")(app);
+require("./app/routes/forum-route")(app);
 
 const PORT = 8081;
 app.listen(PORT, () => {
