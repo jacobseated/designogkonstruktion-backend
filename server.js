@@ -6,10 +6,17 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const db = require("./app/model"); // Inkluder alle database modellerne
 
+let allowedOrigin ; // , "https://wriggleflap.beamtic.net"
+
+if (process.env.NODE_ENV === "production") {
+  allowedOrigin = "https://wriggleflap.beamtic.net";
+} else {
+  allowedOrigin = "http://localhost:8080";
+}
 
 const app = express();
 app.use(cors({
-  origin: "http://localhost:8080", // Replace with your frontend's URL
+  origin: allowedOrigin, // Replace with your frontend's URL
   credentials: true, // Allow cookies to be sent with requests
 }));
 app.use(cookieParser());
@@ -45,9 +52,14 @@ require("./app/routes/session-route")(app);
 require("./app/routes/community-route")(app);
 require("./app/routes/communityMembership-route")(app);
 require("./app/routes/userImage-route")(app);
-require("./app/routes/chat-route")(app);
+require("./app/routes/forum-route")(app);
 
-const PORT = 8081;
+
+// Brug env variabler så man nemt kan skifte port i tilfælde af konflikter
+const PORT = process.env.PORT || 8081;
+const HOST = process.env.HOST || '127.0.0.1';
+
+// Hvis vi køre på production, så brug HTTPS, ellers antager vi, at serveren bliver kørt i et udviklingsmiljø
 if (process.env.NODE_ENV === "production") {
   // If we run in production, make sure to include the certificates to secure communication with frontends
   const options = {
@@ -55,12 +67,12 @@ if (process.env.NODE_ENV === "production") {
     cert: fs.readFileSync('/etc/letsencrypt/live/wriggleflap.beamtic.net/fullchain.pem')
   };
 
-  https.createServer(options, app).listen(PORT, () => {
-    console.log(`Server is running securely at https://wriggleflap.beamtic.net:${PORT}`);
+  https.createServer(options, app).listen(PORT, HOST, () => {
+    console.log(`Server is running securely at https://${HOST}:${PORT}`);
   });
 } else {
-  // Assume the server is running on localhost
-  app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+  
+  app.listen(PORT, HOST, () => {
+    console.log(`Server is running on http://${HOST}:${PORT}`);
   });
 }
