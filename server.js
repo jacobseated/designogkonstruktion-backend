@@ -1,4 +1,6 @@
 const express = require("express");
+const fs = require('fs');
+const https = require('https');
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
@@ -46,6 +48,19 @@ require("./app/routes/userImage-route")(app);
 require("./app/routes/chat-route")(app);
 
 const PORT = 8081;
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+if (process.env.NODE_ENV === "production") {
+  // If we run in production, make sure to include the certificates to secure communication with frontends
+  const options = {
+    key: fs.readFileSync('/etc/letsencrypt/live/wriggleflap.beamtic.net/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/wriggleflap.beamtic.net/fullchain.pem')
+  };
+
+  https.createServer(options, app).listen(PORT, () => {
+    console.log(`Server is running securely at https://wriggleflap.beamtic.net:${PORT}`);
+  });
+} else {
+  // Assume the server is running on localhost
+  app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+  });
+}
