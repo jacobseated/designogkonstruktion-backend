@@ -58,7 +58,7 @@ exports.delete = async (req, res) => {
   }
 };
 
- // Bemærk: vis skal også oprette en tilhørende chat, men det kan vi måske gøre via en trigger
+ // Bemærk: vis skal også oprette et tilhørende forum, men det kan vi måske gøre via en trigger
 exports.create = async (req, res) => {
   try {
     const { community_name } = req.body;

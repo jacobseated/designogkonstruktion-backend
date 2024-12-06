@@ -8,8 +8,8 @@ const sequelize = require('../db/sequelize'); // Inkluder database forbindelsen
 const user = require('./user'); // Tabellen til brugere
 const community = require('./community'); // Tabellen til Fællesskaber
 const communityMembership = require('./communityMembership'); // Tabellen til fællesskabs-medlemskab (Junction Tabel: binder user og community sammen)
-const chat = require('./chat'); // Chat tabellen
-const userImage = require('./userImage'); // Chat tabellen
+const forum = require('./forum'); // Forum tabellen
+const userImage = require('./userImage'); // Image tabellen
 
 // Definer database associations (Ligesom på ER diagrammet)
 require('./associations');
@@ -19,7 +19,7 @@ const db = {
     user, // one-to-one relation med community
     community,
     communityMembership,
-    chat,
+    forum,
     userImage
     // Tilføj flere data modeller her
 };
