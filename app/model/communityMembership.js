@@ -5,11 +5,6 @@ const sequelize = require("../db/sequelize"); // Inkluder database forbindelsen
 const CommunityMembership = sequelize.define(
   "communityMembership",
   {
-    membership_id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
     user_id: {
       type: DataTypes.INTEGER,
       references: {
@@ -30,6 +25,7 @@ const CommunityMembership = sequelize.define(
   {
     tableName: "community_membership",
     timestamps: false, // Kan ikke bruges, da den ikke laver defaultværdier til felterne
+    primaryKey: ['user_id', 'community_id'],
   }
 );
 
