@@ -7,6 +7,7 @@ const CommunityMembership = sequelize.define(
   {
     user_id: {
       type: DataTypes.INTEGER,
+      allowNull: false,
       references: {
           model: 'user', // Navnet på user tabellen
           key: 'user_id'  // Kolonnen i user tabellen
@@ -15,6 +16,7 @@ const CommunityMembership = sequelize.define(
     },
     community_id: {
       type: DataTypes.INTEGER,
+      allowNull: false,
       references: {
           model: 'community', // Navnet på user tabellen
           key: 'community_id'  // Kolonnen i user tabellen
