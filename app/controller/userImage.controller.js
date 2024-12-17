@@ -5,7 +5,7 @@ exports.findOne = async (req, res) => {
   const imageType = (await import('image-type')).default;
   try {
     const image = await userImageRepository.findOne({
-      where: { image_user_id: req.params.user_id },
+      where: { user_id: req.params.user_id },
     });
 
     if (!image || !image.user_image_data) {
@@ -68,7 +68,7 @@ exports.update = async (req, res) => {
     const { user_id } = req.params;
     const { ...otherFields } = req.body;
 
-    const image = await userRepository.findByPk(user_image_id);
+    const image = await userRepository.findByPk(user_id);
 
     if (!image) {
       return res.status(404).json({ message: "Billedet blev ikke fundet" });
