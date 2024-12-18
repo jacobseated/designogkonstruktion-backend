@@ -12,6 +12,7 @@ exports.findAll = async (req, res) => {
         model: user,
         attributes: ["user_fullname", "user_admin"], // Inkluder også navnet fra user tabellen
       },
+      order: [["forum_id", "DESC"]]
     });
     res.json(forumMessages);
   } catch (err) {
