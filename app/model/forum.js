@@ -12,6 +12,7 @@ const Forum = sequelize.define(
     },
     user_id: {
       type: DataTypes.INTEGER,
+      allowNull: false, // Hvis en bruger bliver slettet, så kunne vi have brugt zero-to-many i stedet for one-to-many ved at tillade null
       references: {
           model: 'user', // Navnet på tabellen
           key: 'user_id'  // Primary key Kolonnen i tabellen

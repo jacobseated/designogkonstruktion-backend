@@ -10,7 +10,7 @@ exports.findAll = async (req, res) => {
       where: { community_id },
       include: {
         model: user,
-        attributes: ["user_fullname"], // Inkluder også navnet fra user tabellen
+        attributes: ["user_fullname", "user_admin"], // Inkluder også navnet fra user tabellen
       },
     });
     res.json(forumMessages);

@@ -1,24 +1,22 @@
 const sequelize = require("../sequelize");
 
 // Denne kode bliver kaldt i server.js
-// Bemærk: imens vi udvikler indeholder den også dummy data (vi fjerner dummy data inden deployment)
+// Bemærk: imens vi udvikler indeholder kan den også indeholde dummy data (vi bør fjerne dummy data inden deployment)
 
 const baseDataSQL = {
   user: `
   INSERT INTO user (user_id, user_fullname, user_mail, user_password, user_admin, user_created, user_updated) VALUES
-  (1, 'Ulla Hasen', 'ulla@example.com', '$2b$10$AiLDjp3e4arhAcN.KVCSlekUdkm4BB2IsUi.QkKojvY1jEeTujwlK', 0, NOW(), NOW()),
-  (2, 'Jonas', 'jon@vfl.dk', '$2b$10$AiLDjp3e4arhAcN.KVCSlekUdkm4BB2IsUi.QkKojvY1jEeTujwlK', 1, NOW(), NOW()),
-  (3, 'Jacob Kristensen', 'jac@vfl.dk', '$2b$10$AiLDjp3e4arhAcN.KVCSlekUdkm4BB2IsUi.QkKojvY1jEeTujwlK', 1, NOW(), NOW()),
-  (4, 'David', 'dav@vfl.dk', '$2b$10$AiLDjp3e4arhAcN.KVCSlekUdkm4BB2IsUi.QkKojvY1jEeTujwlK', 1, NOW(), NOW()),
-  (5, 'Martin', 'mar@vfl.dk', '$2b$10$AiLDjp3e4arhAcN.KVCSlekUdkm4BB2IsUi.QkKojvY1jEeTujwlK', 1, NOW(), NOW()),
-  (6, 'Eivind Johannes Goldenstein Hansen', 'eivind@example.com', '$2b$10$AiLDjp3e4arhAcN.KVCSlekUdkm4BB2IsUi.QkKojvY1jEeTujwlK', 1, NOW(), NOW()),
-  (7, 'Karen Elisabeth Johannesson', 'karen@example.com', '$2b$10$AiLDjp3e4arhAcN.KVCSlekUdkm4BB2IsUi.QkKojvY1jEeTujwlK', 0, NOW(), NOW());`,
+  (1, 'Jonas', 'jon@vfl.dk', '$2b$10$AiLDjp3e4arhAcN.KVCSlekUdkm4BB2IsUi.QkKojvY1jEeTujwlK', 1, NOW(), NOW()),
+  (2, 'Jacob Kristensen', 'jac@vfl.dk', '$2b$10$AiLDjp3e4arhAcN.KVCSlekUdkm4BB2IsUi.QkKojvY1jEeTujwlK', 1, NOW(), NOW()),
+  (3, 'David', 'dav@vfl.dk', '$2b$10$AiLDjp3e4arhAcN.KVCSlekUdkm4BB2IsUi.QkKojvY1jEeTujwlK', 1, NOW(), NOW()),
+  (4, 'Martin', 'mar@vfl.dk', '$2b$10$AiLDjp3e4arhAcN.KVCSlekUdkm4BB2IsUi.QkKojvY1jEeTujwlK', 1, NOW(), NOW());`,
   community: `
 INSERT INTO community (community_id, community_name) VALUES
-(3, 'Fiskeklubben'),
-(4, 'Lotusklubben'),
-(1, 'Strikkeklubben'),
-(2, 'Ølklubben');`,
+(1, 'Fiskeklubben'),
+(2, 'Lotusklubben'),
+(3, 'Ølklubben');`,
+/*
+  // Vi har ikke længere brug for det her dummy-data, men lad det være udkommenteret, bare som eksempel
   forum: `
 INSERT INTO forum (forum_id, user_id, community_id, forum_message, message_created) VALUES
 (2, 2, 2, 'Test message 52', '2024-08-30 14:32:00'),
@@ -49,30 +47,25 @@ INSERT INTO forum (forum_id, user_id, community_id, forum_message, message_creat
 (41, 1, 1, 'Helt ærligt, Karen! Hvis du nu bare fulgte opskriften ORDENTLIGT og ikke fumlede rundt hele tiden, så var du nok færdig nu! Det er altså ikke opskriftens skyld, hvis man ikke læser den ordentligt!', '2024-11-20 18:49:00'),
 (42, 7, 1, 'Jamen altså, Ulla, det er jo lige netop dét! Din håndskrift er som hieroglyffer – ingen kan læse det! Hvis du skrev tydeligt, ville jeg ikke sidde her og bakse med noget, der ligner en strikket kludedukke!', '2024-11-20 18:55:00'),
 (43, 4, 1, 'STOP så begge to! Denne opførsel hører ingen steder hjemme her i gruppen. Jeg forventer, at I viser respekt for hinanden og holder en ordentlig tone. Én gang til, og I bliver begge bandlyst fra det her forum! Få det nu løst som voksne mennesker.', '2024-11-20 19:00:00')
-`,
+`, */
 
   communityMembership: `
-INSERT INTO community_membership (membership_id, user_id, community_id) VALUES
-(1, 1, 1), -- Ulla Hansen (strikkeklubben)
-(3, 1, 3), -- Ulla Hansen (fiskeklubben)
-(7, 2, 4), -- Jonas (lotusklubben)
-(12, 3, 2), -- Jacob (ølklubben)
-(9, 3, 3), -- Jacob (fiskeklubben)
-(8, 3, 4), -- Jacob (lotusklubben)
-(6, 4, 4), -- David (lotusklubben)
-(11, 5, 2), -- Martin (ølklubben)
-(10, 5, 4), -- Martin (lotusklubben)
-(13, 6, 2), -- Eivind (ølklubben)
-(4, 6, 3), -- Eivind (fiskeklubben)
-(5, 6, 4), -- Eivind (lotusklubben)
-(2, 7, 1); -- Karen (strikkeklubben)
+INSERT INTO community_membership (user_id, community_id) VALUES
+(1, 2), -- Jonas (lotusklubben)
+(2, 3), -- Jacob (ølklubben)
+(2, 1), -- Jacob (fiskeklubben)
+(2, 2), -- Jacob (lotusklubben)
+(3, 2), -- David (lotusklubben)
+(4, 3), -- Martin (ølklubben)
+(4, 2); -- Martin (lotusklubben)
 `,
 
   // Flere datasæts kan indsættes nedenfor
 };
 
-// Funktion til at indsætte vores dummy-data
-/*const insertBaseDataSQL = async () => {
+// Funktion til at indsætte vores start-data
+// MÅ IKKE UDKOMMENTERES: Udkommenter "NODE_ENV=development" i jeres .env fil, hvis I vil undgå at genoprette tabeller.
+const insertBaseDataSQL = async () => {
   try {
     for (const [table, query] of Object.entries(baseDataSQL)) {
       await sequelize.query(query); // Execute the insert query
@@ -81,7 +74,7 @@ INSERT INTO community_membership (membership_id, user_id, community_id) VALUES
   } catch (error) {
     console.error("Error inserting data:", error);
   }
-};*/
+};
 
 // Eksporter funktionen, så vi kan kalde den fra server.js
 module.exports = insertBaseDataSQL;

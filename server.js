@@ -67,7 +67,7 @@ if (process.env.NODE_ENV === "production") {
     cert: fs.readFileSync('/etc/letsencrypt/live/wriggleflap.beamtic.net/fullchain.pem')
   };
 
-  https.createServer(options, app).listen(PORT, HOST, () => {
+  https.createServer(options, app).listen(PORT, "0.0.0.0", () => {
     console.log(`Server is running securely at https://${HOST}:${PORT}`);
   });
 } else {

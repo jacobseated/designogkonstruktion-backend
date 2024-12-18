@@ -8,7 +8,7 @@ module.exports = app => {
     router.get('/users', users.findAll);
     router.get('/users/:user_id', users.findOne);
 
-    router.post('/users', users.create);
+    router.post('/users', authenticate, users.create);
 
     router.delete('/users/:user_id', authenticate, users.delete);
     

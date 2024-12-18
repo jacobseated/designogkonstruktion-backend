@@ -7,7 +7,6 @@ const deleteOldForumMessagesEvent = async () => {
     CREATE EVENT IF NOT EXISTS delete_old_forum_messages
     ON SCHEDULE EVERY 1 DAY
     STARTS '2024-11-29 00:00:00'
-    ENDS '2030-12-31 23:59:59'
     ON COMPLETION PRESERVE
     ENABLE
     COMMENT 'Command deletes 3 month old messages.'
