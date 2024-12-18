@@ -27,13 +27,13 @@ exports.create = async (req, res) => {
     const { community_id } = req.params;
     const { user_id, forum_message } = req.body;
 
-    await forumRepository.create({
+    const response = await forumRepository.create({
       user_id,
       community_id,
       forum_message,
     });
 
-    res.status(201).json({ message: "Forum beskeden blev sendt!" });
+    res.status(201).json({ message: "Forum beskeden blev sendt!", what: response });
   } catch (err) {
     console.error("Error creating forum message:", err);
     res.status(500).json({ message: "Kunne ikke afsende chatbeskeden" });
