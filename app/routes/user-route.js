@@ -5,10 +5,10 @@ const authenticate = require("../middleware/authenticate");
 module.exports = app => {
     let router = express.Router();
 
-    router.get('/users', users.findAll);
-    router.get('/users/:user_id', users.findOne);
+    router.get('/users', authenticate, users.findAll);
+    router.get('/users/:user_id', authenticate, users.findOne);
 
-    router.post('/users', authenticate, users.create);
+    router.post('/users', users.create);
 
     router.delete('/users/:user_id', authenticate, users.delete);
     
